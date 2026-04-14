@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+.env
+coverage
+tmp
+
+apps/web/node_modules
+apps/web/dist
+
+apps/api/bin
+
+postgres-data

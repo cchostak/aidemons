@@ -1,0 +1,23 @@
+{
+  "name": "aidemons",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "concurrently -c cyan,green \"npm run dev:web\" \"npm run dev:api\"",
+    "dev:web": "npm --workspace @aidemons/web run dev",
+    "dev:api": "cd apps/api && go run ./cmd/server",
+    "build": "npm run build:web && npm run build:api",
+    "build:web": "npm --workspace @aidemons/web run build",
+    "build:api": "cd apps/api && go build ./cmd/server",
+    "check": "npm run build:web && cd apps/api && go test ./...",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:migrate": "docker compose exec -T db psql -U aidemons -d aidemons < apps/api/migrations/001_initial_schema.sql"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

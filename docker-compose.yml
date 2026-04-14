@@ -1,0 +1,84 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: aidemons-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aidemons
+      POSTGRES_USER: aidemons
+      POSTGRES_PASSWORD: aidemons
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aidemons -d aidemons"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  migrate:
+    image: postgres:16-alpine
+    depends_on:
+      db:
+        condition: service_healthy
+    working_dir: /workspace
+    environment:
+      PGPASSWORD: aidemons
+    volumes:
+      - .:/workspace
+    command:
+      - /bin/sh
+      - -lc
+      - psql -h db -U aidemons -d aidemons < apps/api/migrations/001_initial_schema.sql
+    restart: "no"
+
+  api:
+    image: golang:1.23-bookworm
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    working_dir: /workspace/apps/api
+    environment:
+      PORT: 8080
+      WEB_ORIGIN: http://localhost:5173
+      DATABASE_URL: postgres://aidemons:aidemons@db:5432/aidemons?sslmode=disable
+      GOCACHE: /tmp/gocache
+    volumes:
+      - .:/workspace
+      - go-mod-cache:/go/pkg/mod
+      - go-build-cache:/tmp/gocache
+    command:
+      - go
+      - run
+      - ./cmd/server
+    ports:
+      - "8080:8080"
+
+  web:
+    image: node:20-bookworm
+    depends_on:
+      api:
+        condition: service_started
+    working_dir: /workspace
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      VITE_API_PROXY_TARGET: http://api:8080
+      VITE_WS_PROXY_TARGET: ws://api:8080
+    volumes:
+      - .:/workspace
+      - root-node-modules:/workspace/node_modules
+    command:
+      - /bin/bash
+      - -lc
+      - if [ ! -d node_modules/phaser ]; then npm ci; fi; npm --workspace @aidemons/web run dev -- --host 0.0.0.0
+    ports:
+      - "5173:5173"
+
+volumes:
+  go-build-cache:
+  go-mod-cache:
+  postgres-data:
+  root-node-modules:
