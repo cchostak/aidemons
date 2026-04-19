@@ -5,6 +5,7 @@ import {
   generateEnemyBulwark,
   generateEnemyHound,
   generateEnemyMite,
+  generateNpcWarden,
   generatePet
 } from "./generators/creatures";
 import {
@@ -59,6 +60,7 @@ export class AssetForge {
     generateRunestone(this.scene, "prop-runestone", metal);
 
     generateAvatar(this.scene, "avatar-frontier", metal);
+    generateNpcWarden(this.scene, "npc-warden", metal);
     generatePotionIcon(this.scene, "pickup-potion", zone);
     generateBladeIcon(this.scene, "pickup-blade", metal);
     generateGemIcon(this.scene, "pickup-gem", zone);

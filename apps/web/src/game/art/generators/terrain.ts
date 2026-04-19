@@ -30,17 +30,24 @@ export function generateTerrainTile(
     graphics.fillStyle(palette.base, 1);
     graphics.fillRect(0, 0, 96, 96);
 
-    for (let i = 0; i < 42; i += 1) {
-      const radius = rng.between(3, 12);
-      graphics.fillStyle(i % 3 === 0 ? palette.deep : palette.mid, 0.12 + rng.float() * 0.18);
-      graphics.fillCircle(rng.between(0, 96), rng.between(0, 96), radius);
+    for (let i = 0; i < 52; i += 1) {
+      const radius = rng.between(2, 10);
+      graphics.fillStyle(i % 3 === 0 ? palette.deep : palette.mid, 0.08 + rng.float() * 0.14);
+      graphics.fillEllipse(rng.between(0, 96), rng.between(0, 96), radius * 2.4, radius);
     }
 
-    for (let i = 0; i < 12; i += 1) {
+    for (let i = 0; i < 18; i += 1) {
       const startX = rng.between(0, 96);
       const startY = rng.between(0, 96);
-      graphics.lineStyle(1, palette.bright, 0.12);
+      graphics.lineStyle(1, palette.deep, 0.22);
       graphics.lineBetween(startX, startY, startX + rng.between(-18, 18), startY + rng.between(-18, 18));
+    }
+
+    for (let i = 0; i < 10; i += 1) {
+      const x = rng.between(0, 96);
+      const y = rng.between(0, 96);
+      graphics.fillStyle(palette.glow, 0.03 + rng.float() * 0.03);
+      graphics.fillRect(x, y, rng.between(8, 20), 1);
     }
 
     graphics.lineStyle(2, palette.deep, 0.18);
@@ -80,15 +87,20 @@ export function generateTree(scene: Phaser.Scene, key: string, palette: ForgePal
 
     const crownColors = [palette.deep, palette.base, palette.mid, palette.bright] as const;
     const crownOffsets = [
-      { x: 22, y: 38, r: 14 },
-      { x: 38, y: 26, r: 18 },
-      { x: 50, y: 40, r: 14 },
-      { x: 34, y: 46, r: 20 }
+      { points: [18, 50, 12, 28, 30, 22, 34, 46] },
+      { points: [32, 46, 26, 20, 45, 14, 52, 38] },
+      { points: [48, 50, 42, 28, 58, 26, 60, 48] },
+      { points: [30, 58, 22, 34, 40, 30, 48, 56] }
     ] as const;
 
     crownOffsets.forEach((shape, index) => {
       graphics.fillStyle(crownColors[index], 0.9);
-      graphics.fillCircle(shape.x, shape.y, shape.r);
+      graphics.fillPoints([
+        new Phaser.Geom.Point(shape.points[0], shape.points[1]),
+        new Phaser.Geom.Point(shape.points[2], shape.points[3]),
+        new Phaser.Geom.Point(shape.points[4], shape.points[5]),
+        new Phaser.Geom.Point(shape.points[6], shape.points[7])
+      ], true, true);
     });
 
     for (let i = 0; i < 16; i += 1) {
@@ -111,5 +123,8 @@ export function generateObelisk(scene: Phaser.Scene, key: string, palette: Forge
     graphics.lineBetween(20, 36, 40, 36);
     graphics.lineStyle(4, palette.glow, 0.22);
     graphics.strokeCircle(30, 52, 8);
+    graphics.lineStyle(1, palette.bright, 0.2);
+    graphics.lineBetween(20, 28, 30, 18);
+    graphics.lineBetween(40, 28, 30, 18);
   });
 }

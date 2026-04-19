@@ -31,7 +31,7 @@ export function generateBrushClump(
       const x = rng.between(6, 50);
       const height = rng.between(10, 26);
 
-      graphics.lineStyle(2, index % 2 === 0 ? palette.mid : palette.bright, 0.9);
+      graphics.lineStyle(2, index % 2 === 0 ? palette.mid : palette.deep, 0.9);
       graphics.lineBetween(x, 34, x + rng.between(-5, 5), 34 - height);
     }
   });
@@ -67,6 +67,8 @@ export function generateCrystalNode(scene: Phaser.Scene, key: string, palette: F
     graphics.lineStyle(2, palette.glow, 0.4);
     graphics.strokeTriangle(24, 6, 12, 34, 22, 42);
     graphics.strokeTriangle(24, 6, 26, 42, 36, 34);
+    graphics.lineStyle(1, palette.glow, 0.15);
+    graphics.lineBetween(24, 10, 24, 40);
   });
 }
 
@@ -94,5 +96,7 @@ export function generateRunestone(scene: Phaser.Scene, key: string, palette: For
     graphics.lineBetween(18, 22, 32, 22);
     graphics.lineBetween(18, 34, 32, 34);
     graphics.strokeCircle(25, 28, 6);
+    graphics.lineStyle(1, palette.bright, 0.16);
+    graphics.lineBetween(16, 14, 34, 46);
   });
 }

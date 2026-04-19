@@ -37,6 +37,8 @@ func NewRouter(cfg config.Config, db *pgxpool.Pool) *gin.Engine {
 	worldHandler := handlers.NewWorldHandler(worldService)
 	sessionHandler := handlers.NewSessionHandler(sessionService)
 	combatHandler := handlers.NewCombatHandler(sessionService)
+	petHandler := handlers.NewPetHandler(sessionService)
+	npcHandler := handlers.NewNPCHandler(sessionService)
 	socketHandler := handlers.NewSocketHandler(hub)
 
 	router.GET("/healthz", healthHandler.Get)
@@ -46,6 +48,9 @@ func NewRouter(cfg config.Config, db *pgxpool.Pool) *gin.Engine {
 	api.GET("/world/bootstrap", worldHandler.GetBootstrap)
 	api.GET("/session/state", sessionHandler.GetState)
 	api.POST("/combat/action", combatHandler.ResolveAction)
+	api.POST("/pets/select", petHandler.Select)
+	api.POST("/pets/evolve", petHandler.Evolve)
+	api.POST("/npcs/interact", npcHandler.Interact)
 
 	return router
 }

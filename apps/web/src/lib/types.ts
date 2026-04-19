@@ -56,6 +56,52 @@ export interface PlayerSessionState {
   drive: number;
   bondedPetId: string;
   bondedPetLevel: number;
+  positionX: number;
+  positionY: number;
+}
+
+export interface SkillSessionState {
+  id: string;
+  label: string;
+  keybind: string;
+  tone: string;
+  category: string;
+  manaCost: number;
+  cooldown: number;
+  maxCooldown: number;
+}
+
+export interface PetSessionState {
+  id: string;
+  name: string;
+  role: string;
+  affinity: string;
+  stage: string;
+  level: number;
+  health: number;
+  maxHealth: number;
+  bond: number;
+  drive: number;
+  exp: number;
+  expToNext: number;
+  skills: string[];
+  blurb: string;
+  evolutionHint: string;
+  evolutionName: string;
+  evolutionReady: boolean;
+  active: boolean;
+}
+
+export interface NpcSessionState {
+  id: string;
+  name: string;
+  role: string;
+  title: string;
+  positionX: number;
+  positionY: number;
+  summary: string;
+  dialogue: string[];
+  services: string[];
 }
 
 export interface EncounterSessionState {
@@ -72,6 +118,9 @@ export interface EncounterSessionState {
 
 export interface SessionState {
   player: PlayerSessionState;
+  skills: SkillSessionState[];
+  pets: PetSessionState[];
+  npcs: NpcSessionState[];
   encounters: EncounterSessionState[];
 }
 
@@ -82,4 +131,15 @@ export interface CombatActionResult {
   levelUp: boolean;
   loot?: string;
   activeTargetId: string;
+}
+
+export interface MutationResult {
+  state: SessionState;
+  log: string[];
+}
+
+export interface NpcInteractionResult {
+  state: SessionState;
+  npc: NpcSessionState;
+  log: string[];
 }

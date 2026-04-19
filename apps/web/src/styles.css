@@ -152,12 +152,20 @@ button {
 .hud-left-tools,
 .chat-console,
 .bond-console,
-.utility-window,
-.bottom-hud,
-.system-dock,
 .brand-stamp {
   position: absolute;
   z-index: 3;
+}
+
+.bottom-hud,
+.system-dock {
+  position: absolute;
+  z-index: 4;
+}
+
+.utility-window {
+  position: absolute;
+  z-index: 7;
 }
 
 .hud-top-left {
@@ -371,11 +379,13 @@ button {
   box-shadow:
     inset 0 0 0 2px rgba(73, 93, 115, 0.45),
     0 8px 24px rgba(0, 0, 0, 0.4);
-  background:
-    radial-gradient(circle at 35% 32%, rgba(182, 212, 138, 0.95), transparent 22%),
-    radial-gradient(circle at 56% 62%, rgba(104, 170, 95, 0.9), transparent 28%),
-    radial-gradient(circle at 68% 24%, rgba(176, 210, 126, 0.88), transparent 18%),
-    linear-gradient(180deg, rgba(58, 107, 47, 0.98), rgba(35, 68, 31, 0.98));
+  background: linear-gradient(180deg, rgba(23, 44, 39, 0.95), rgba(16, 25, 34, 0.98));
+}
+
+.minimap-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .map-ring {
@@ -383,31 +393,6 @@ button {
   inset: 14px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.map-marker {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.map-marker.player {
-  left: 82px;
-  top: 84px;
-  background: var(--gold);
-}
-
-.map-marker.ally {
-  left: 118px;
-  top: 54px;
-  background: var(--blue);
-}
-
-.map-marker.quest {
-  left: 48px;
-  top: 112px;
-  background: var(--red);
 }
 
 .path-button,
@@ -552,6 +537,71 @@ button {
   color: var(--text-soft);
   font-size: 0.84rem;
   line-height: 1.35;
+}
+
+.pet-evolution-panel {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.pet-stage-line {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.evolve-button {
+  min-width: 80px;
+  padding: 8px 10px;
+  border: 1px solid rgba(214, 177, 112, 0.16);
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(31, 45, 60, 0.96), rgba(12, 18, 28, 0.98));
+  color: var(--text-dim);
+}
+
+.evolve-button.ready {
+  color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(228, 184, 102, 0.18);
+}
+
+.pet-meter-grid {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.pet-roster {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.pet-roster-button {
+  padding: 8px 10px;
+  border: 1px solid rgba(132, 171, 204, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-soft);
+  text-align: left;
+  border-radius: 0;
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+}
+
+.pet-roster-button.active {
+  border-color: rgba(214, 177, 112, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(228, 184, 102, 0.14);
+}
+
+.pet-roster-button strong,
+.pet-roster-button span {
+  display: block;
+}
+
+.pet-roster-button span {
+  font-size: 0.72rem;
 }
 
 .utility-window {
@@ -755,6 +805,11 @@ button {
   text-align: left;
 }
 
+.action-slot.disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
 .action-slot.ruby {
   box-shadow: inset 0 0 0 1px rgba(215, 81, 67, 0.16);
 }
@@ -785,6 +840,13 @@ button {
 
 .action-label {
   font-size: 0.72rem;
+}
+
+.action-meta {
+  color: var(--text-dim);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .system-dock {
